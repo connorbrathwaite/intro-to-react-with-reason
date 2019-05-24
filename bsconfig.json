@@ -1,5 +1,5 @@
 {
-  "name": "github-reason-playground",
+  "name": "intro-to-reason-react",
   "namespace": true,
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors", "-bs-g"],
   "suffix": ".bs.js",
@@ -17,5 +17,10 @@
     "module": "es6",
     "in-source": true
   },
-  "bs-dependencies": ["@glennsl/bs-json", "bs-fetch", "reason-react", "reason-react-update"]
+  "bs-dependencies": [
+    "@glennsl/bs-json",
+    "bs-fetch",
+    "reason-react",
+    "reason-react-update"
+  ]
 }
