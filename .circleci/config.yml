@@ -1,0 +1,27 @@
+version: 2
+
+jobs:
+  build:
+    parallelism: 1
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn build
+      - run: yarn build:js:prod
+      - deploy:
+          name: 'Deployment'
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo "Deploying go GH Pages!!!"
+            fi

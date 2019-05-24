@@ -1,0 +1,47 @@
+{
+  "name": "github-reason-playground",
+  "version": "1.0.0",
+  "description": "yum",
+  "license": "MIT",
+  "homepage": "https://github.com/connorbrathwaite/reason-react-fetch-demo",
+  "scripts": {
+    "build": "bsb -make-world",
+    "build:js:dev": "webpack -w",
+    "build:js:prod": "NODE_ENV=production webpack",
+    "dev:start": "bsb -make-world -w",
+    "dev:server": "webpack-dev-server",
+    "test": "echo \"error: no test specified\" && exit 1",
+    "clean": "bsb -clean-world"
+  },
+  "dependencies": {
+    "@glennsl/bs-json": "3.0.0",
+    "bs-fetch": "0.3.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "reason-react": "0.7.0",
+    "reason-react-update": "0.1.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "9.5.1",
+    "bs-platform": "5.0.4",
+    "bsb-js": "1.1.7",
+    "css-loader": "2.1.1",
+    "cssnano": "4.1.10",
+    "html-webpack-plugin": "3.2.0",
+    "husky": "2.3.0",
+    "postcss-import": "12.0.1",
+    "postcss-loader": "3.0.0",
+    "prettier": "1.17.1",
+    "pretty-quick": "1.11.0",
+    "style-loader": "0.23.1",
+    "tailwindcss": "1.0.1",
+    "webpack": "4.32.2",
+    "webpack-cli": "3.3.2",
+    "webpack-dev-server": "3.4.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

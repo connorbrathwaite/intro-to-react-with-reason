@@ -1,0 +1,51 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+}
+
+pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+}
+
+input:focus {
+  outline: none;
+}
+
+main {
+  grid-area: content;
+}
+
+header {
+  grid-area: header;
+}
+
+footer {
+  visibility: hidden;
+  grid-area: footer;
+}
+
+#root {
+  display: grid;
+  grid-gap: 0;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
