@@ -17,10 +17,9 @@ external make: (~isVisible: bool=?, ~_type: string=?, ~message: string) => React
 [@react.component]
 let make = () => {
   let url = ReasonReactRouter.useUrl();
-
   <>
     <Header.component />
-    <main className="bg-grey-300 px-4">
+    <main className="container px-4">
       {switch (url.path) {
        | [] => <Home.component />
        | ["intro"] => <Intro.component />

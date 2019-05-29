@@ -12,9 +12,10 @@ body {
 }
 
 pre code {
+  display: block;
   background-color: #eee;
   border: 1px solid #999;
-  display: block;
+  overflow-x: auto;
   padding: 20px;
 }
 
@@ -31,8 +32,13 @@ header {
 }
 
 footer {
-  visibility: hidden;
   grid-area: footer;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
 }
 
 #root {
@@ -42,10 +48,7 @@ footer {
     "header"
     "content"
     "footer";
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0fr 3fr 0fr;
+  height: 100%;
 }

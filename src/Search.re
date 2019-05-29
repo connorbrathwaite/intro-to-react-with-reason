@@ -102,21 +102,25 @@ let component = (~username: string="") => {
             (
               switch (inputValue) {
               | "" => Reset
+              | nonEmptyValue when state !== Loading => nonEmptyValue->String.trim->LoadRepos
               | nonEmptyValue => nonEmptyValue->String.trim->LoadRepos
               }
             )
             ->send;
-            if (state === Loading) {
-              Js.log("Abort Inflight XHR on new fetch");
-            };
             None;
           },
         )
       | KeyDown(27) =>
-        Js.log("Abort Fetch");
-        ReactUpdate.NoUpdate;
+        ReactUpdate.SideEffects(
+          ({send}) => {
+            Reset->send;
+            None;
+          },
+        )
       | KeyDown(_) => ReactUpdate.NoUpdate
-      | Reset => ReactUpdate.Update(NotAsked)
+      | Reset =>
+        setInputValue(_ => "");
+        ReactUpdate.Update(NotAsked);
       | LoadRepos(username) =>
         ReactUpdate.UpdateWithSideEffects(
           Loading,
@@ -143,172 +147,32 @@ let component = (~username: string="") => {
       | LoadReposFailed => ReactUpdate.Update(Failure)
       }
     );
-
-  <div className="bg-pink-lightest flex flex-col justify-start items-center">
-    <pre>
-      <code>
-        "type repo = {
-  id: int,
-  owner: string,
-  title: string,
-  fullName: string,
-  stars: int,
-  url: string,
-  description: option(string),
-  isFork: bool,
-};
-
-type repos = list(repo);
-
-let parseRepoJson = json =>
-  Json.Decode.{
-    id: json |> field(\"id\", int),
-    owner: json |> field(\"owner\", owner => owner |> field(\"login\", string)),
-    title: json |> field(\"name\", string),
-    fullName: json |> field(\"full_name\", string),
-    stars: json |> field(\"stargazers_count\", int),
-    url: json |> field(\"html_url\", string),
-    description: json |> optional(field(\"description\", string)),
-    isFork: json |> field(\"fork\", bool),
-  };
-
-let parseReposResponseJson = (json): repos => Json.Decode.list(parseRepoJson, json);
-
-let getApiUrl = (username: string) => \"https://api.github.com/users/\" ++ username ++ \"/repos?type=all&sort=updated\";
-
-let fetchRepos = (username: string) =>
-  Js.Promise.(
-    username->getApiUrl
-    |> Fetch.fetch
-    |> then_(Fetch.Response.json)
-    |> then_(json => json |> parseReposResponseJson |> (parsedRepos => Some(parsedRepos) |> resolve))
-    |> catch(_err => resolve(None))
-  );
-
-...
-
-type state =
-  | NotAsked
-  | Loading
-  | Success(repos)
-  | Failure;
-
-type action =
-  | Reset
-  | LoadRepos(string)
-  | LoadedRepos(repos)
-  | LoadReposFailed
-  | KeyDown(int);
-
-[@react.component]
-let component = (~username: string=\"\") => {
-  let (inputValue: string, setInputValue) = React.useState(() => username);
-
-  let (state, dispatch) =
-    ReactUpdate.useReducer(NotAsked, (action, state) =>
-      switch (action) {
-      | KeyDown(13) =>
-        ReactUpdate.SideEffects(
-          ({send}) => {
-
-              switch (inputValue) {
-              | \"\" => Reset
-              | nonEmptyValue => nonEmptyValue->String.trim->LoadRepos
-              }
-            )
-            ->send
-            if (state === Loading) {
-              Js.log(\"Abort Inflight XHR on new fetch\");
-            };
-            None;
-          },
-
-      | KeyDown(27) =>
-        Js.log(\"Abort Fetch\");
-        ReactUpdate.NoUpdate;
-      | KeyDown(_) => ReactUpdate.NoUpdate
-      | Reset => ReactUpdate.Update(NotAsked)
-      | LoadRepos(username) =>
-        ReactUpdate.UpdateWithSideEffects(
-          Loading,
-          ({send}) => {
-            Js.Promise.(
-              username->fetchRepos
-              |> then_(result =>
-                   (
-                     switch (result) {
-                     | Some(repos) when repos->List.length > 0 => repos->LoadedRepos
-                     | Some(_) => LoadReposFailed
-                     | None => LoadReposFailed
-                     }
-                   )
-                   ->send
-                   ->resolve
+  <div className="container">
+    <div className="flex flex-grow flex-col justify-start items-center">
+      <input
+        autoFocus=true
+        className="border font-mono appearance-none py-2 px-3 w-full outline-none"
+        placeholder="Enter a Github Username . . ."
+        value=inputValue
+        onKeyDown={e => ReactEvent.Keyboard.which(e)->KeyDown->dispatch}
+        onChange={e => Utils.valueFromEvent(e)->setInputValue}
+      />
+      {switch (state) {
+       | NotAsked => <p className="mt-8 font-mono"> "Ask Jeeves..."->Utils.str </p>
+       | Failure => <p className="mt-8 font-mono"> "No results found for "->Utils.str inputValue->Utils.str </p>
+       | Loading => <p className="mt-8 font-mono"> "Loading..."->Utils.str </p>
+       | Success(repos) =>
+         <div className="bg-white shadow rounded flex mb-8 mt-8">
+           <ul className="appearance-none p-0 w-full text-grey-darker border rounded">
+             {repos
+              |> List.map(({id, url, description, fullName, title, stars, isFork}) =>
+                   <Repository key={id->string_of_int} url description fullName isFork title stars />
                  )
-              |> ignore
-            );
-            None;
-          },
-        )
-      | LoadedRepos(repos) => repos->Success->ReactUpdate.Update
-      | LoadReposFailed => ReactUpdate.Update(Failure)
-      }
-    )
-
-  <div className=\"bg-pink-lightest flex flex-col justify-start items-center\">
-    <inpu
-      autoFocus=tr
-      className=\"shadow border font-mono appearance-none py-2 px-3 rounded w-full .outline-none\"
-      placeholder=\"Enter a Github Username . . .\"
-      value=inputValue
-      onKeyDown={e => ReactEvent.Keyboard.which(e)->KeyDown->dispatch}
-      onChange={e => Utils.valueFromEvent(e)->setInputValue}
-    /
-    {switch (state)
-     | NotAsked => <p className\"mt-8 font-mono text-l\">\"Ask Jeeve...\"->Utils.str </p>
-     | Failure => <p className=\"mt-8 font-mono text-lg\"> \"No results found for \"->Utils.str inputValue->Utils.str </p>
-     | Loading => <p cassName=\"mt-8 font-mono text-lg\"> \"Lading...\"->Utils.str </p>
-     | Success(repos) =
-       <div className=\"bg-white shadow rounded flex mb-8 mt-8\">
-         <ul className=\"appearance-none p-0 w-full text-grey-darker border rounded\">
-           {repos
-            |> List.map(({id, url, description, fullName, title, stars, isFork}) =>
-                 <Repository key={id->string_of_int} url description fullName isFork title stars />
-               )
-            |> Array.of_list
-            |> React.array}
-         </ul>
-       </div>
-    }}
-  </div>;
-};"
-        ->Utils.str
-      </code>
-    </pre>
-    <hr />
-    <input
-      autoFocus=true
-      className="border font-mono appearance-none py-2 px-3 w-full outline-none"
-      placeholder="Enter a Github Username . . ."
-      value=inputValue
-      onKeyDown={e => ReactEvent.Keyboard.which(e)->KeyDown->dispatch}
-      onChange={e => Utils.valueFromEvent(e)->setInputValue}
-    />
-    {switch (state) {
-     | NotAsked => <p className="mt-8 font-mono"> "Ask Jeeves..."->Utils.str </p>
-     | Failure => <p className="mt-8 font-mono"> "No results found for "->Utils.str inputValue->Utils.str </p>
-     | Loading => <p className="mt-8 font-mono"> "Loading..."->Utils.str </p>
-     | Success(repos) =>
-       <div className="bg-white shadow rounded flex mb-8 mt-8">
-         <ul className="appearance-none p-0 w-full text-grey-darker border rounded">
-           {repos
-            |> List.map(({id, url, description, fullName, title, stars, isFork}) =>
-                 <Repository key={id->string_of_int} url description fullName isFork title stars />
-               )
-            |> Array.of_list
-            |> React.array}
-         </ul>
-       </div>
-     }}
+              |> Array.of_list
+              |> React.array}
+           </ul>
+         </div>
+       }}
+    </div>
   </div>;
 };
