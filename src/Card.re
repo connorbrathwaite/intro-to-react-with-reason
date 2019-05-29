@@ -1,12 +1,24 @@
 [@react.component]
 let component =
-    (~src: string, ~alt: string, ~text: string, ~subText: string, ~ctas: list(string), ~onClick, ~isInCart=false) =>
+    (
+      ~src: string,
+      ~alt: string,
+      ~title: string,
+      ~subText: string,
+      ~price: int,
+      ~ctas: list(string),
+      ~handleOnClick,
+      ~isInCart: bool,
+    ) => {
   <div className="flex flex-auto flex-col border border-black">
     <img src alt />
     <div className="flex flex-auto flex-col p-2">
-      <p className="font-bold mb-2"> text->Utils.str </p>
-      <p className="text-gray-700"> subText->Utils.str </p>
-      <button className="text-gray-700" onClick> "Add to Cart"->Utils.str </button>
+      <p className="font-bold mb-2"> title->Utils.str </p>
+      <p className="font-semibold"> subText->Utils.str </p>
+      <p className="font-bold"> {price->string_of_int->Utils.str} </p>
+      <button className="text-gray-700" onClick=handleOnClick>
+        {Utils.str(isInCart ? "Remove from Cart" : "Add to Cart")}
+      </button>
     </div>
     <div className="flex flex-auto flex-row flex-wrap p-2">
       {ctas
@@ -15,3 +27,4 @@ let component =
        |> React.array}
     </div>
   </div>;
+};
