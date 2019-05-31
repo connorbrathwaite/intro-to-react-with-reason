@@ -5,7 +5,7 @@ const isProd = process.env.NODE_ENV === "production";
 const port = process.env.PORT || 8000;
 
 module.exports = {
-  entry: "./src/index.bs.js",
+  entry: "./src/Index.bs.js",
   mode: isProd ? "production" : "development",
   output: {
     path: outputDir,
@@ -13,7 +13,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./build/index.html",
+      template: "src/index.html",
       inject: false
     })
   ],

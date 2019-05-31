@@ -17,7 +17,7 @@ let component =
       <p className="font-semibold"> subText->Utils.str </p>
       <p className="font-bold"> {price->string_of_int->Utils.str} </p>
       <button className="text-gray-700" onClick=handleOnClick>
-        {Utils.str(isInCart ? "Remove from Cart" : "Add to Cart")}
+        (isInCart ? "Remove from Cart" : "Add to Cart")->Utils.str
       </button>
     </div>
     <div className="flex flex-auto flex-row flex-wrap p-2">
