@@ -17,10 +17,5 @@
     "module": "es6",
     "in-source": true
   },
-  "bs-dependencies": [
-    "@glennsl/bs-json",
-    "bs-fetch",
-    "reason-react",
-    "reason-react-update"
-  ]
+  "bs-dependencies": ["@glennsl/bs-json", "bs-fetch", "reason-react"]
 }
