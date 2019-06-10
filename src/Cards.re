@@ -1,9 +1,3 @@
-module CartIcon = {
-  [@react.component]
-  let make = (~count=0) =>
-    <div className="sticky flex align-center justify-end m-4"> {count->string_of_int->Utils.str} </div>;
-};
-
 type product = {
   id: int,
   title: string,
@@ -23,12 +17,6 @@ type action =
   | CartAdd(int)
   | CartSubtract(int)
   | CartCheckout;
-
-let rec getListLength = (myList: list('a)) =>
-  switch (myList) {
-  | [] => 0
-  | [_, ...tail] => 1 + getListLength(tail)
-  };
 
 [@react.component]
 let component = () => {
@@ -68,15 +56,15 @@ let component = () => {
       {state.products
        |> List.map(({id, title, src, price}) =>
             <Card.component
-              key={id->string_of_int}
               alt="Lorem"
-              price
-              title
               ctas=["First", "Second"]
-              src
-              subText="Foo Bar"
-              isInCart={isInCart(id)}
               handleOnClick={_ => onClick(id)}
+              isInCart={isInCart(id)}
+              key={id->string_of_int}
+              price
+              src
+              title
+              subText="Foo Bar"
             />
           )
        |> Array.of_list

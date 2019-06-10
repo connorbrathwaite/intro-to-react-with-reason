@@ -1,19 +1,3 @@
-module AlertContainer = {
-  [@react.component]
-  let make = (~children) => {
-    <>
-      <pre className="mb-2">
-        <code>
-          "[@react.component] [@bs.module]
-external make: (~isVisible: bool=?, ~_type: string=?, ~message: string) => React.element = \"./Alert\";"
-          ->Utils.str
-        </code>
-      </pre>
-      children
-    </>;
-  };
-};
-
 [@react.component]
 let make = () => {
   let url = ReasonReactRouter.useUrl();
@@ -21,8 +5,8 @@ let make = () => {
     <Header.component />
     <main className="container px-4">
       {switch (url.path) {
-       | [] => <Home.component />
        | ["intro"] => <Intro.component />
+       | ["cards"] => <Cards.component />
        | ["login"] => <Login.component />
        | ["search"] => <Search.component username={url.search} />
        | ["vanilla-react"] when url.search !== "" =>

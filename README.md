@@ -1,8 +1,9 @@
 # ReasonReact
 
-[![CircleCI](https://circleci.com/gh/connorbrathwaite/reason-react-fetch-demo/tree/master.svg?style=svg&circle-token=82cefcc8703fdd319b1d8bfe01508140abc6fab6)](https://circleci.com/gh/connorbrathwaite/reason-react-fetch-demo/tree/master)
-
 To run:
 
-* `yarn install`
-* `yarn start`
+- `yarn install`
+- `yarn dev:start`
+- `yarn dev:server`
+
+[Learn more tonight](https://www.meetup.com/ReasonMTL/events/261548153/?recEventId=261548153&gj=wcs1_e&rv=wcs1_e&_xtd=gatlbWFpbF9jbGlja9oAJGMxYjk4MjY0LWY2ZWMtNGIwMi1hZjlhLTk2YjJmZTNkMGZjMg&_af=event&_af_eid=261548153&recNumber=1)
