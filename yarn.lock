@@ -594,10 +594,10 @@ bs-fetch@0.4.0:
   resolved "https://registry.yarnpkg.com/bs-fetch/-/bs-fetch-0.4.0.tgz#355fd0e3c77d283f6735d43b9daa81aa6e75a365"
   integrity sha512-hoQ/5kxTeIMRJ2S9IrSx5uVzDcrebXv089E+MUJyOjT2P9ux3bJ7hrIPXBQZiErf6uyL1Q5WkdVv9cEw1Hkpuw==
 
-bs-platform@5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-5.0.4.tgz#d406ef43c12d1b19d8546884d8b5b4e0fb709372"
-  integrity sha512-rXM+ztN8wYXQ4ojfFGylvPOf8GRLOvM94QJsMMV9VpsLChKCjesWMNybTZvpoyNsESu2nC5q+C9soG+BPhuUFQ==
+bs-platform@5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-5.2.1.tgz#3f76f6d4f4c7255296375a8104c8be332770b691"
+  integrity sha512-3ISP+RBC/NYILiJnphCY0W3RTYpQ11JGa2dBBLVug5fpFZ0qtSaL3ZplD8MyjNeXX2bC7xgrWfgBSn8Tc9om7Q==
 
 bsb-js@1.1.7:
   version "1.1.7"
