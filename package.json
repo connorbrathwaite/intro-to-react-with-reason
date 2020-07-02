@@ -18,7 +18,7 @@
     "bs-fetch": "0.4.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "reason-react": "0.7.0",
+    "reason-react": "0.9.1",
     "reason-react-update": "0.1.1"
   },
   "devDependencies": {
